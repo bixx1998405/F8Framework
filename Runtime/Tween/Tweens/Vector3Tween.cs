@@ -26,39 +26,6 @@ namespace F8Framework.Core
             this.PauseReset = () => this.Init(from, to, t);
         }
 
-        /// <summary>
-        /// 每帧执行的更新逻辑
-        /// </summary>
-        internal override void Update(float deltaTime)
-        {
-            if(isPause || IsComplete || IsRecycle)
-                return;
-
-            // 处理启动延迟
-            if (tempDelay > 0.0f)
-            {
-                tempDelay -= deltaTime;
-                return;
-            }
-            
-            base.Update(deltaTime);
-
-            currentTime += deltaTime;
-            
-            // 检查是否完成当前周期
-            if (currentTime >= duration)
-            {
-                this.UpdateValue(true);
-                
-                bool shouldComplete = !HandleLoop();
-                if (shouldComplete)
-                    onComplete();
-                return;
-            }
-            
-            this.UpdateValue(false);
-        }
-
         internal override void UpdateValue(bool isEnd = false)
         {
             base.UpdateValue(isEnd);
@@ -73,13 +40,10 @@ namespace F8Framework.Core
             else
             {
                 float normalizedProgress = currentTime >= duration ? 1.0f : currentTime / duration;
-                // 通过曲线函数计算缓动进度
                 float curveProgress = GetCurveProgress(normalizedProgress);
-            
-                // 基于缓动算法计算当前值
+
                 EasingFunctions.ChangeVector(from, to, curveProgress, ease, ref tempValue);
-            
-                // 触发值更新回调
+
                 if (onUpdateVector3 != null)
                     onUpdateVector3(tempValue);
 
@@ -110,51 +74,17 @@ namespace F8Framework.Core
             base.LoopReset();
             return this;
         }
-        
-        private float GetCurveProgress(float normalizedProgress)
+
+        protected override void OnLoopFlip()
         {
-            switch (loopType)
-            {
-                case LoopType.Yoyo:
-                    // 使用平滑的往返曲线 (0→1→0)
-                    return Mathf.PingPong(normalizedProgress * 2, 1);
-                default:
-                    return normalizedProgress;
-            }
+            (from, to) = (to, from);
         }
-        
-        private bool HandleLoop()
+
+        protected override void OnLoopIncrement()
         {
-            if (loopType == LoopType.None || tempLoopCount == 0)
-            {
-                return false;
-            }
-            else
-            {
-                if (tempLoopCount > 0)
-                {
-                    tempLoopCount -= 1;
-                }
-                switch (loopType)
-                {
-                    case LoopType.Restart:
-                        break;
-                    case LoopType.Flip:
-                        (from, to) = (to, from);
-                        break;
-                    case LoopType.Incremental:
-                    {
-                        var delta = to - from;
-                        from = to;
-                        to += delta;
-                        break;
-                    }
-                    case LoopType.Yoyo:
-                        break;
-                }
-                this.LoopReset();
-                return tempLoopCount > 0 || tempLoopCount == -1;
-            }
+            var delta = to - from;
+            from = to;
+            to += delta;
         }
     }
 }

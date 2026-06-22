@@ -36,5 +36,33 @@ namespace F8Framework.Core
 
 			Localization.Instance?.RemoveLocalizer(this);
 		}
+
+		protected bool ValidateAndInject(string textId)
+		{
+			if (string.IsNullOrEmpty(textId)) return false;
+
+#if UNITY_EDITOR
+			if (!Application.isPlaying)
+			{
+				Localization.Instance?.LoadInEditor();
+				Prepare();
+			}
+#endif
+
+			if (Localization.Instance?.Has(textId) == false)
+			{
+				if (Application.isPlaying) LogF8.LogError($"Text ID: {textId} 不可用。");
+				return false;
+			}
+
+			var text = Localization.Instance?.GetTextFromId(textId);
+			injector.Inject(text, this);
+			return true;
+		}
+
+		protected void ClearInjector()
+		{
+			injector?.Inject("", this);
+		}
 	}
 }

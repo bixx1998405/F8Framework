@@ -85,9 +85,7 @@ namespace F8Framework.Core
         public KcpServerChannel(string channelName, ushort port)
         {
             this.ChannelName = channelName;
-            Telepathy.Log.Info = (s) => LogF8.LogNet(s);
-            Telepathy.Log.Warning = (s) => LogF8.LogWarning(s);
-            Telepathy.Log.Error = (s) => LogF8.LogError(s);
+            NetworkLogHelper.SetupTelepathyLogging();
             this.Port = port;
             server = new KcpServerEndPoint(
                 (connectionId, ipEndPoint) => onConnected?.Invoke(connectionId, ipEndPoint.ToString()),

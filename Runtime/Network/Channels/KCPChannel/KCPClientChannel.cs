@@ -87,9 +87,7 @@ namespace F8Framework.Core
         public KcpClientChannel(string channelName)
         {
             this.ChannelName = channelName;
-            Telepathy.Log.Info = (s) => LogF8.LogNet(s);
-            Telepathy.Log.Warning = (s) => LogF8.LogWarning(s);
-            Telepathy.Log.Error = (s) => LogF8.LogError(s);
+            NetworkLogHelper.SetupTelepathyLogging();
             client = new KcpClient(
                 OnConnectHandler,
                 OnReceiveDataHandler,

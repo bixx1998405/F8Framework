@@ -70,29 +70,23 @@ namespace F8Framework.Core
             pathCalculator = new PathCalculator(path, options);
         }
 
-        /// <summary>
-        /// 每帧执行的更新逻辑
-        /// </summary>
         internal override void Update(float deltaTime)
         {
             if (isPause || IsComplete || IsRecycle || targetTransform == null || pathCalculator == null)
                 return;
 
-            // 处理启动延迟
             if (tempDelay > 0.0f)
             {
                 tempDelay -= deltaTime;
                 return;
             }
             
-            base.Update(deltaTime);
+            UpdateEvents(deltaTime);
 
             currentTime += deltaTime;
             
-            // 检查是否完成当前周期
             if (currentTime >= duration)
             {
-                // 确保到达终点
                 this.UpdateValue(true);
                 
                 bool shouldComplete = !HandleLoop();
@@ -258,49 +252,6 @@ namespace F8Framework.Core
             return this;
         }
         
-        private float GetCurveProgress(float normalizedProgress)
-        {
-            switch (loopType)
-            {
-                case LoopType.Yoyo:
-                    // 使用平滑的往返曲线 (0→1→0)
-                    return Mathf.PingPong(normalizedProgress * 2, 1);
-                default:
-                    return normalizedProgress;
-            }
-        }
-        
-        private bool HandleLoop()
-        {
-            if (loopType == LoopType.None || tempLoopCount == 0)
-            {
-                return false;
-            }
-            else
-            {
-                if (tempLoopCount > 0)
-                {
-                    tempLoopCount -= 1;
-                }
-                
-                // 对于路径动画，大部分循环类型不需要特殊处理
-                // 因为路径计算器会处理进度
-                switch (loopType)
-                {
-                    case LoopType.Restart:
-                        break;
-                    case LoopType.Flip:
-                        // 对于路径，翻转可能没有意义，保持原样
-                        break;
-                    case LoopType.Incremental:
-                        // 路径动画通常不支持增量
-                        break;
-                    case LoopType.Yoyo:
-                        break;
-                }
-                this.LoopReset();
-                return tempLoopCount > 0 || tempLoopCount == -1;
-            }
-        }
+
     }
 }

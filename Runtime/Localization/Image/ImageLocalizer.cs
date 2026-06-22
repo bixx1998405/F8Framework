@@ -52,33 +52,15 @@ namespace F8Framework.Core
 		
 		public bool ChangeID(string textId)
 		{
-			if (string.IsNullOrEmpty(textId)) return false;
-
-#if UNITY_EDITOR
-			// for Timeline Preview
-			if (!Application.isPlaying)
-			{
-				Localization.Instance?.LoadInEditor();
-				Prepare();
-			}
-#endif
-
-			if (Localization.Instance?.Has(textId) == false)
-			{
-				if (Application.isPlaying) LogF8.LogError($"Text ID: {textId} 不可用。");
-				return false;
-			}
-
+			if (!ValidateAndInject(textId)) return false;
 			this.localizedTextID = textId;
-			var text = Localization.Instance?.GetTextFromId(textId);
-			injector.Inject(text, this);
 			return true;
 		}
 
 		public void Clear()
 		{
 			localizedTextID = null;
-			injector?.Inject("", this);
+			ClearInjector();
 		}
 	}
 }
