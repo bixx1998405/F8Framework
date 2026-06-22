@@ -39,7 +39,7 @@ namespace F8Framework.Core
             }
             catch (Exception ex)
             {
-                LogF8.LogError("文件不存在或生成MD5失败：" + ex);
+                LogF8.LogError("文件不存在或生成MD5失败：" + ex.ToString());
                 return "";
             }
         }
@@ -256,7 +256,7 @@ namespace F8Framework.Core
             catch (System.Exception ex)
             {
                 LogF8.LogError(
-                    string.Format("SafeWriteAllBytes failed! path = {0} with err = {1}", outFile, ex.Message));
+                    string.Format("SafeWriteAllBytes failed! path = {0} with err:\n{1}", outFile, ex));
                 return false;
             }
         }
@@ -282,7 +282,7 @@ namespace F8Framework.Core
             catch (System.Exception ex)
             {
                 LogF8.LogError(
-                    string.Format("SafeWriteAllLines failed! path = {0} with err = {1}", outFile, ex.Message));
+                    string.Format("SafeWriteAllLines failed! path = {0} with err:\n{1}", outFile, ex));
                 return false;
             }
         }
@@ -307,8 +307,8 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeWriteAllText failed! path = {0} with err = {1}", outFile,
-                    ex.Message));
+                LogF8.LogError(string.Format("SafeWriteAllText failed! path = {0} with err:\n{1}", outFile,
+                    ex));
                 return false;
             }
         }
@@ -332,7 +332,7 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeReadAllBytes failed! path = {0} with err = {1}", inFile, ex.Message));
+                LogF8.LogError(string.Format("SafeReadAllBytes failed! path = {0} with err:\n{1}", inFile, ex));
                 return null;
             }
         }
@@ -356,7 +356,7 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeReadAllLines failed! path = {0} with err = {1}", inFile, ex.Message));
+                LogF8.LogError(string.Format("SafeReadAllLines failed! path = {0} with err:\n{1}", inFile, ex));
                 return null;
             }
         }
@@ -380,7 +380,7 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeReadAllText failed! path = {0} with err = {1}", inFile, ex.Message));
+                LogF8.LogError(string.Format("SafeReadAllText failed! path = {0} with err:\n{1}", inFile, ex));
                 return null;
             }
         }
@@ -447,7 +447,7 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeClearDir failed! path = {0} with err = {1}", folderPath, ex.Message));
+                LogF8.LogError(string.Format("SafeClearDir failed! path = {0} with err:\n{1}", folderPath, ex));
                 return false;
             }
         }
@@ -470,7 +470,7 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeDeleteDir failed! path = {0} with err: {1}", folderPath, ex.Message));
+                LogF8.LogError(string.Format("SafeDeleteDir failed! path = {0} with err:\n{1}", folderPath, ex));
                 return false;
             }
         }
@@ -495,7 +495,7 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeDeleteFile failed! path = {0} with err: {1}", filePath, ex.Message));
+                LogF8.LogError(string.Format("SafeDeleteFile failed! path = {0} with err:\n{1}", filePath, ex));
                 return false;
             }
         }
@@ -521,8 +521,8 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeRenameFile failed! path = {0} with err: {1}", sourceFileName,
-                    ex.Message));
+                LogF8.LogError(string.Format("SafeRenameFile failed! path = {0} with err:\n{1}", sourceFileName,
+                    ex));
                 return false;
             }
         }
@@ -548,8 +548,8 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeCopyFile failed! formFile = {0}, toFile = {1}, with err = {2}",
-                    fromFile, toFile, ex.Message));
+                LogF8.LogError(string.Format("SafeCopyFile failed! formFile = {0}, toFile = {1}, with err:\n{2}",
+                    fromFile, toFile, ex));
                 return false;
             }
         }
@@ -605,8 +605,8 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError(string.Format("SafeCopyDirectory failed! sourceDirName = {0}, destDirName = {1}, with err = {2}",
-                    sourceDirName, destDirName, ex.Message));
+                LogF8.LogError(string.Format("SafeCopyDirectory failed! sourceDirName = {0}, destDirName = {1}, with err:\n{2}",
+                    sourceDirName, destDirName, ex));
                 return false;
             }
         }

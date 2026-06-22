@@ -227,10 +227,12 @@ namespace F8Framework.Core
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"从{_settings.location}加载存储数据失败：{ex.Message}");
+                LogF8.LogError($"从{_settings.location}加载存储数据失败：\n{ex}");
             }
-
-            _isFileStorageLoaded = true;
+            finally
+            {
+                _isFileStorageLoaded = true;
+            }
         }
 
         private StorageFileData CreateStorageFileData(Dictionary<string, string> storage)
@@ -291,7 +293,7 @@ namespace F8Framework.Core
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"读取存储文件失败：{ex.Message}");
+                LogF8.LogError($"读取存储文件失败：\n{ex}");
                 return new Dictionary<string, string>();
             }
         }
@@ -312,12 +314,16 @@ namespace F8Framework.Core
 
                 string json = Util.LitJson.ToJson(CreateStorageFileData(storage));
                 byte[] fileBytes = EncodeFileContent(json);
-                FileTools.SafeWriteAllBytes(fullPath, fileBytes);
+                if (!FileTools.SafeWriteAllBytes(fullPath, fileBytes))
+                {
+                    LogF8.LogError($"写入存储文件失败：SafeWriteAllBytes 返回 false，路径：{fullPath}");
+                    return false;
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"写入存储文件失败：{ex.Message}");
+                LogF8.LogError($"写入存储文件失败：\n{ex}");
                 return false;
             }
         }
@@ -448,12 +454,12 @@ namespace F8Framework.Core
             }
             catch (InvalidDataException ex)
             {
-                LogF8.LogError($"读取键 {key} 失败：解压错误，{ex.Message}");
+                LogF8.LogError($"读取键 {key} 失败：解压错误\n{ex}");
                 return null;
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"读取键 {key} 原始数据失败：{ex.Message}");
+                LogF8.LogError($"读取键 {key} 原始数据失败：\n{ex}");
                 return null;
             }
         }
@@ -515,7 +521,7 @@ namespace F8Framework.Core
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"解析存储文件失败：{ex.Message}");
+                LogF8.LogError($"解析存储文件失败：\n{ex}");
                 return string.Empty;
             }
         }
@@ -1608,7 +1614,7 @@ namespace F8Framework.Core
                 }
                 catch (System.Exception ex)
                 {
-                    LogF8.LogError($"读取对象失败，键：{key}，原因：{ex.Message}");
+                    LogF8.LogError($"读取对象失败，键：{key}，原因：\n{ex}");
                     return defaultValue;
                 }
             }
@@ -1637,7 +1643,7 @@ namespace F8Framework.Core
             }
             catch (System.Exception ex)
             {
-                LogF8.LogError($"写入对象失败，键：{key}，原因：{ex.Message}");
+                LogF8.LogError($"写入对象失败，键：{key}，原因：\n{ex}");
             }
         }
         
