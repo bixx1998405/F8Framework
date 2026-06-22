@@ -110,7 +110,7 @@ namespace F8Framework.Core
             public static string GetPublicIPAddress(int timeoutMilliseconds = 5000)
             {
                 var client = new WebClient();
-                var task = client.DownloadStringTaskAsync("http://icanhazip.com");
+                var task = client.DownloadStringTaskAsync("https://icanhazip.com");
                 if (task.Wait(timeoutMilliseconds) == false)
                     return string.Empty;
                 return task.Result.Trim();
