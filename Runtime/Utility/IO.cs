@@ -679,6 +679,7 @@ namespace F8Framework.Core
             /// <param name="fileFullPath">完整文件路径，带后缀名</param>
             /// <param name="context">内容</param>
             /// <returns>是否写入成功</returns>
+            [System.Obsolete("BinaryFormatter is a security risk (insecure deserialization). Use JsonUtility or a safe serializer instead.")]
             public static bool WriterFormattedBinary(string fileFullPath, object context)
             {
                 var folderPath = Path.GetDirectoryName(fileFullPath);
@@ -701,6 +702,7 @@ namespace F8Framework.Core
             /// <param name="fileName">带后缀的文件名</param>
             /// <param name="context">内容</param>
             /// <returns>是否写入成功</returns>
+            [System.Obsolete("BinaryFormatter is a security risk (insecure deserialization). Use JsonUtility or a safe serializer instead.")]
             public static bool WriterFormattedBinary(string filePath, string fileName, object context)
             {
                 if (!Directory.Exists(filePath))
@@ -720,6 +722,7 @@ namespace F8Framework.Core
             /// </summary>
             /// <param name="fileFullPath">完整文件路径</param>
             /// <returns>内容</returns>
+            [System.Obsolete("BinaryFormatter is a security risk (insecure deserialization). Use JsonUtility or a safe serializer instead.")]
             public static object ReadFormattedBinary(string fileFullPath)
             {
                 if (!File.Exists(fileFullPath))

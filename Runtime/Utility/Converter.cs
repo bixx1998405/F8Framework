@@ -128,6 +128,7 @@ namespace F8Framework.Core
             /// </summary>
             /// <param name="obj">对象</param>
             /// <returns>byte数组</returns>
+            [System.Obsolete("BinaryFormatter is a security risk (insecure deserialization). Use JsonUtility or a safe serializer instead.")]
             public static byte[] Object2Bytes(object obj)
             {
                 using (MemoryStream ms = new MemoryStream())

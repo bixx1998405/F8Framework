@@ -120,14 +120,22 @@ namespace F8Framework.Core
         {
             try
             {
+                if (mailData == null || string.IsNullOrEmpty(mailData.userName) || string.IsNullOrEmpty(mailData.to))
+                {
+                    throw new InvalidOperationException("MailData is not configured. Set valid userName and recipient before sending.");
+                }
+
                 using (MailMessage mailMessage = new MailMessage(mailData.userName, mailData.to))
                 {
                     mailMessage.Subject = subject;
                     mailMessage.Body = body;
 
-                    for (int index = 0; index < mailData.cc.Length; ++index)
+                    if (mailData.cc != null)
                     {
-                        mailMessage.CC.Add(mailData.cc[index]);
+                        for (int index = 0; index < mailData.cc.Length; ++index)
+                        {
+                            mailMessage.CC.Add(mailData.cc[index]);
+                        }
                     }
 
                     if (attachment != null)
@@ -140,7 +148,7 @@ namespace F8Framework.Core
                     smtpClient.Credentials = new NetworkCredential(mailData.userName, mailData.userPassword, mailData.smtpHost) as ICredentialsByHost;
                     ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
                     {
-                        return true;
+                        return sslPolicyErrors == SslPolicyErrors.None;
                     };                    
                     smtpClient.SendCompleted += callback;
                     smtpClient.SendAsync(mailMessage, string.Empty);
