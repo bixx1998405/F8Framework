@@ -2,23 +2,14 @@
 
 namespace F8Framework.Core
 {
-    public class DonwloadUpdateEventArgs : IReference
+    public class DonwloadUpdateEventArgs : DownloadEventArgsBase
     {
-        /// <summary>
-        /// current download info
-        /// </summary>
-        public DownloadInfo DownloadInfo { get; private set; }
-
-        public int CurrentDownloadTaskIndex { get; private set; }
-        public int DownloadTaskCount { get; private set; }
         public long TotalDownloadedLength { get; private set; }
         public TimeSpan TimeSpan { get; private set; }
 
-        public void Clear()
+        public override void Clear()
         {
-            DownloadInfo = default;
-            CurrentDownloadTaskIndex = 0;
-            DownloadTaskCount = 0;
+            base.Clear();
             TotalDownloadedLength = 0;
             TimeSpan = TimeSpan.Zero;
         }
@@ -27,9 +18,7 @@ namespace F8Framework.Core
             long totalDownloadedLength, TimeSpan timeSpan)
         {
             var eventArgs = ReferencePool.Acquire<DonwloadUpdateEventArgs>();
-            eventArgs.DownloadInfo = downloadInfo;
-            eventArgs.CurrentDownloadTaskIndex = currentTaskIndex;
-            eventArgs.DownloadTaskCount = taskCount;
+            eventArgs.SetBase(downloadInfo, currentTaskIndex, taskCount);
             eventArgs.TotalDownloadedLength = totalDownloadedLength;
             eventArgs.TimeSpan = timeSpan;
             return eventArgs;

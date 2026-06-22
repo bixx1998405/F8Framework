@@ -135,33 +135,6 @@ namespace F8Framework.Core
             }
         }
 
-        internal override void Update(float deltaTime)
-        {
-            if (isPause || IsComplete || IsRecycle)
-                return;
-                
-            if (tempDelay > 0.0f)
-            {
-                tempDelay -= deltaTime;
-                return;
-            }
-            
-            base.Update(deltaTime);
-            currentTime += deltaTime;
-            
-            if (currentTime >= duration)
-            {
-                this.UpdateValue(true);
-                
-                bool shouldComplete = !HandleLoop();
-                if (shouldComplete)
-                    onComplete?.Invoke();
-                return;
-            }
-            
-            this.UpdateValue(false);
-        }
-
         internal override void UpdateValue(bool isEnd = false)
         {
             base.UpdateValue(isEnd);
@@ -457,48 +430,16 @@ namespace F8Framework.Core
             }
         }
         
-        private float GetCurveProgress(float normalizedProgress)
+        protected override void OnLoopFlip()
         {
-            switch (loopType)
-            {
-                case LoopType.Yoyo:
-                    return Mathf.PingPong(normalizedProgress * 2, 1);
-                default:
-                    return normalizedProgress;
-            }
+            (from, to) = (to, from);
         }
-        
-        private bool HandleLoop()
+
+        protected override void OnLoopIncrement()
         {
-            if (loopType == LoopType.None || tempLoopCount == 0)
-            {
-                return false;
-            }
-            else
-            {
-                if (tempLoopCount > 0)
-                {
-                    tempLoopCount -= 1;
-                }
-                
-                switch (loopType)
-                {
-                    case LoopType.Restart:
-                        break;
-                    case LoopType.Flip:
-                        (from, to) = (to, from);
-                        break;
-                    case LoopType.Incremental:
-                        incrementalLoopCount++;
-                        from = to;
-                        to += originalTo;
-                        break;
-                    case LoopType.Yoyo:
-                        break;
-                }
-                this.LoopReset();
-                return tempLoopCount > 0 || tempLoopCount == -1;
-            }
+            incrementalLoopCount++;
+            from = to;
+            to += originalTo;
         }
         
         internal override void Reset()

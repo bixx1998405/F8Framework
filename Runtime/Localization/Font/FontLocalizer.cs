@@ -68,45 +68,27 @@ namespace F8Framework.Core
 
 		private Font GetFont(int index)
 		{
-			return fonts != null && index >= 0 && index < fonts.Length ? fonts[index] : null;
+			return ArrayHelper.GetSafeElement(fonts, index);
 		}
 
 #if LOCALIZER_TMP
 		private TMP_FontAsset GetTMPFont(int index)
 		{
-			return TMP_fontAsset != null && index >= 0 && index < TMP_fontAsset.Length ? TMP_fontAsset[index] : null;
+			return ArrayHelper.GetSafeElement(TMP_fontAsset, index);
 		}
 #endif
 		
 		public bool ChangeID(string textId)
 		{
-			if (string.IsNullOrEmpty(textId)) return false;
-
-#if UNITY_EDITOR
-			// for Timeline Preview
-			if (!Application.isPlaying)
-			{
-				Localization.Instance?.LoadInEditor();
-				Prepare();
-			}
-#endif
-
-			if (Localization.Instance?.Has(textId) == false)
-			{
-				if (Application.isPlaying) LogF8.LogError($"Text ID: {textId} 不可用。");
-				return false;
-			}
-
+			if (!ValidateAndInject(textId)) return false;
 			this.localizedTextID = textId;
-			var text = Localization.Instance?.GetTextFromId(textId);
-			injector.Inject(text, this);
 			return true;
 		}
 
 		public void Clear()
 		{
 			localizedTextID = null;
-			injector?.Inject("", this);
+			ClearInjector();
 		}
 	}
 }

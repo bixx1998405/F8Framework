@@ -2,19 +2,14 @@
 
 namespace F8Framework.Core
 {
-    public class DownloadFailureEventArgs : IReference
+    public class DownloadFailureEventArgs : DownloadEventArgsBase
     {
-        public DownloadInfo DownloadInfo { get; private set; }
         public string ErrorMessage { get; private set; }
-        public int CurrentDownloadTaskIndex { get; private set; }
-        public int DownloadTaskCount { get; private set; }
         public TimeSpan TimeSpan { get; private set; }
 
-        public void Clear()
+        public override void Clear()
         {
-            DownloadInfo = default;
-            CurrentDownloadTaskIndex = 0;
-            DownloadTaskCount = 0;
+            base.Clear();
             ErrorMessage = null;
             TimeSpan = TimeSpan.Zero;
         }
@@ -23,9 +18,7 @@ namespace F8Framework.Core
             string errorMessage, TimeSpan timeSpan)
         {
             var eventArgs = ReferencePool.Acquire<DownloadFailureEventArgs>();
-            eventArgs.DownloadInfo = info;
-            eventArgs.CurrentDownloadTaskIndex = currentTaskIndex;
-            eventArgs.DownloadTaskCount = taskCount;
+            eventArgs.SetBase(info, currentTaskIndex, taskCount);
             eventArgs.ErrorMessage = errorMessage;
             eventArgs.TimeSpan = timeSpan;
             return eventArgs;

@@ -67,6 +67,63 @@ namespace F8Framework.Core
 
         internal bool CanRecycle = true;
         internal bool IsRecycle = false;
+
+        /// <summary>
+        /// Calculates curve progress based on loop type.
+        /// </summary>
+        protected float GetCurveProgress(float normalizedProgress)
+        {
+            switch (loopType)
+            {
+                case LoopType.Yoyo:
+                    return Mathf.PingPong(normalizedProgress * 2, 1);
+                default:
+                    return normalizedProgress;
+            }
+        }
+
+        /// <summary>
+        /// Swaps from/to values for Flip loop. Override in subclasses.
+        /// </summary>
+        protected virtual void OnLoopFlip() { }
+
+        /// <summary>
+        /// Increments values for Incremental loop. Override in subclasses.
+        /// </summary>
+        protected virtual void OnLoopIncrement() { }
+
+        /// <summary>
+        /// Handles loop logic. Returns true if looping continues.
+        /// </summary>
+        protected bool HandleLoop()
+        {
+            if (loopType == LoopType.None || tempLoopCount == 0)
+            {
+                return false;
+            }
+            else
+            {
+                if (tempLoopCount > 0)
+                {
+                    tempLoopCount -= 1;
+                }
+                switch (loopType)
+                {
+                    case LoopType.Restart:
+                        break;
+                    case LoopType.Flip:
+                        OnLoopFlip();
+                        break;
+                    case LoopType.Incremental:
+                        OnLoopIncrement();
+                        break;
+                    case LoopType.Yoyo:
+                        break;
+                }
+                this.LoopReset();
+                return tempLoopCount > 0 || tempLoopCount == -1;
+            }
+        }
         
         public float CurrentTime 
         { 
@@ -123,6 +180,37 @@ namespace F8Framework.Core
         /// Called to update this tween
         /// </summary>
         internal virtual void Update(float deltaTime)
+        {
+            if(isPause || IsComplete || IsRecycle)
+                return;
+
+            if (tempDelay > 0.0f)
+            {
+                tempDelay -= deltaTime;
+                return;
+            }
+
+            UpdateEvents(deltaTime);
+
+            currentTime += deltaTime;
+
+            if (currentTime >= duration)
+            {
+                this.UpdateValue(true);
+
+                bool shouldComplete = !HandleLoop();
+                if (shouldComplete)
+                    onComplete();
+                return;
+            }
+
+            this.UpdateValue(false);
+        }
+
+        /// <summary>
+        /// Updates time-based events and onUpdate callback.
+        /// </summary>
+        protected void UpdateEvents(float deltaTime)
         {
             timeSinceStart += deltaTime;
 

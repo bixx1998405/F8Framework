@@ -50,7 +50,7 @@ namespace F8Framework.Core
 
 		private Sprite GetSprite(int index)
 		{
-			return sprites != null && index >= 0 && index < sprites.Length ? sprites[index] : null;
+			return ArrayHelper.GetSafeElement(sprites, index);
 		}
 
 		protected override void ClearTarget()

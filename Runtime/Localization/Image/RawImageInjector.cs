@@ -50,7 +50,7 @@ namespace F8Framework.Core
 
 		private Texture GetTexture(int index)
 		{
-			return textures != null && index >= 0 && index < textures.Length ? textures[index] : null;
+			return ArrayHelper.GetSafeElement(textures, index);
 		}
 
 		protected override void ClearTarget()

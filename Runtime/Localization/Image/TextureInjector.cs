@@ -51,7 +51,7 @@ namespace F8Framework.Core
 
 		private Texture2D GetTexture(int index)
 		{
-			return texture2Ds != null && index >= 0 && index < texture2Ds.Length ? texture2Ds[index] : null;
+			return ArrayHelper.GetSafeElement(texture2Ds, index);
 		}
 
 		protected override void ClearTarget()

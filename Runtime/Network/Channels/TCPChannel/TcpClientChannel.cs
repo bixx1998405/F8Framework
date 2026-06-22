@@ -39,9 +39,7 @@ namespace F8Framework.Core
         {
             this.ChannelName = channelName;
             client = new Client(TcpConstants.MaxMessageSize);
-            Telepathy.Log.Info = (s) => LogF8.LogNet(s);
-            Telepathy.Log.Warning = (s) => LogF8.LogWarning(s);
-            Telepathy.Log.Error = (s) => LogF8.LogError(s);
+            NetworkLogHelper.SetupTelepathyLogging();
         }
         
         public void Connect(string host, int port)
