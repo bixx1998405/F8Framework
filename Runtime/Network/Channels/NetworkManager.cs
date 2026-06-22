@@ -159,7 +159,14 @@ namespace F8Framework.Core
             
             for (int i = 0; i < channelDict.Count; i++)
             {
-                channelDict[i].TickRefresh();
+                try
+                {
+                    channelDict[i].TickRefresh();
+                }
+                catch (System.Exception e)
+                {
+                    LogF8.LogError($"网络通道 {channelDict[i].ChannelName} 更新异常：\n{e}");
+                }
             }
         }
         

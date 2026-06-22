@@ -132,8 +132,9 @@ namespace F8Framework.Core
             {
                 writer = new StreamWriter(logFilePath, true, Encoding.UTF8);
             }
-            catch (Exception)
+            catch (Exception e1)
             {
+                LogF8.LogException(e1);
                 try
                 {
                     writer = new StreamWriter(string.Format("{0}/log-{1}-{2}-{3}-{4}.txt", Application.persistentDataPath, nowTime.Year,

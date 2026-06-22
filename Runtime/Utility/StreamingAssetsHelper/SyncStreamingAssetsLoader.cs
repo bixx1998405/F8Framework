@@ -60,7 +60,7 @@ namespace F8Framework.Core
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"Failed to initialize SyncStreamingAssetsLoader: {ex.Message}");
+                LogF8.LogError($"Failed to initialize SyncStreamingAssetsLoader:\n{ex}");
                 Close();
             }
 #endif
@@ -122,7 +122,7 @@ namespace F8Framework.Core
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"Failed to load bytes from {filePath}: {ex.Message}");
+                LogF8.LogError($"Failed to load bytes from {filePath}:\n{ex}");
                 // 如果读取失败，可能是文件流已关闭，尝试重新初始化
                 Close();
                 Initialize();

@@ -276,13 +276,13 @@ namespace F8Framework.Core
                     }
                 } while (excelReader.NextResult()); //excelReader.NextResult() Excel表下一个sheet页有没有数据
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-                throw new Exception("请关闭 " + inputPath + " 后再导表！");
+                throw new Exception("请关闭 " + inputPath + " 后再导表！", ex);
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"处理Excel文件失败: {inputPath}, 错误: {ex.Message}");
+                LogF8.LogError($"处理Excel文件失败: {inputPath}, 错误:\n{ex}");
                 throw;
             }
             finally

@@ -161,7 +161,7 @@ namespace F8Framework.Core
                 }
                 catch (Exception exception)
                 {
-                    LogF8.LogError($"切换 Control Scheme 失败: {controlSchemeName}，{exception.Message}");
+                    LogF8.LogError($"切换 Control Scheme 失败: {controlSchemeName}\n{exception}");
                     return false;
                 }
             }
@@ -585,7 +585,7 @@ namespace F8Framework.Core
             }
             catch (Exception exception)
             {
-                LogF8.LogError($"切换玩家 Control Scheme 失败: playerIndex={playerIndex}，controlScheme={controlSchemeName}，{exception.Message}");
+                LogF8.LogError($"切换玩家 Control Scheme 失败: playerIndex={playerIndex}，controlScheme={controlSchemeName}\n{exception}");
                 return false;
             }
         }

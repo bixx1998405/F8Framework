@@ -698,7 +698,7 @@ namespace F8Framework.Core.Editor
             }
             catch (Exception e)
             {
-                LogF8.LogError($"加密过程中发生错误: {e.Message}");
+                LogF8.LogError($"加密过程中发生错误:\n{e}");
             }
         }
 

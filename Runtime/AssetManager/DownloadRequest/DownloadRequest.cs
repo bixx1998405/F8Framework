@@ -83,7 +83,7 @@ namespace F8Framework.Core
             }
             catch (Exception e)
             {
-                string message = string.Format("无法发送uri：{0} 的文件下载请求。异常：{1}", uri, e.Message);
+                string message = string.Format("无法发送uri：{0} 的文件下载请求。异常：\n{1}", uri, e);
                 LogF8.LogError(message);
                 LoadFail();
             }
@@ -113,7 +113,7 @@ namespace F8Framework.Core
             }
             catch (Exception e)
             {
-                string message = string.Format("无法为uri：{0} 资产捆绑包下载请求。异常：{1}", uri, e.Message);
+                string message = string.Format("无法为uri：{0} 资产捆绑包下载请求。异常：\n{1}", uri, e);
                 LogF8.LogError(message);
                 LoadFail();
             }
@@ -144,7 +144,7 @@ namespace F8Framework.Core
             }
             catch (Exception e)
             {
-                LogF8.LogError($"无法创建 UnityWebRequest，URI：{uri}。异常：{e.Message}");
+                LogF8.LogError($"无法创建 UnityWebRequest，URI：{uri}。异常：\n{e}");
                 LoadFail();
                 yield break;
             }

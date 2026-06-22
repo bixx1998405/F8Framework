@@ -424,14 +424,14 @@ namespace F8Framework.Core.Editor
                     }
                 } while (excelReader.NextResult()); //excelReader.NextResult() Excel表下一个sheet页有没有数据
             }
-            catch (IOException)
+            catch (IOException ex)
             {
                 EditorUtility.DisplayDialog("注意！！！", "\n请关闭 " + inputPath + " 后再导表！", "确定");
-                throw new Exception("请关闭 " + inputPath + " 后再导表！");
+                throw new Exception("请关闭 " + inputPath + " 后再导表！", ex);
             }
             catch (Exception ex)
             {
-                LogF8.LogError($"处理Excel文件失败: {inputPath}, 错误: {ex.Message}");
+                LogF8.LogError($"处理Excel文件失败: {inputPath}, 错误:\n{ex}");
                 throw;
             }
             finally
@@ -615,6 +615,7 @@ namespace F8Framework.Core.Editor
                 catch (Exception e)
                 {
                     LogF8.LogError($"序列化失败: {e}");
+                    throw;
                 }
             }else
             {
@@ -628,6 +629,7 @@ namespace F8Framework.Core.Editor
                 catch (Exception e)
                 {
                     LogF8.LogError($"序列化失败: {e}");
+                    throw;
                 }
             }
         }
