@@ -2,3 +2,4 @@
 
 [assembly: InternalsVisibleTo("F8Framework.Core.Editor")]
 [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
+[assembly: InternalsVisibleTo("F8Framework.EditModeTests")]
